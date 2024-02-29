@@ -1,10 +1,4 @@
-
-provider "azurerm" {
-  # Configuration options
-    features {}
-    #skip_provider_registration = true
-}
-
+# Create Azure Blob Storage
 
 resource "random_string" "resource_code" {
   length  = 5
@@ -16,31 +10,6 @@ resource "azurerm_resource_group" "helmchart" {
   name     = "helmchartgroup"
   location = "East US"
 }
-
-resource "azurerm_key_vault" "helmchart" {
-  name                = "helmchart-key-vault"
-  resource_group_name = azurerm_resource_group.helmchart.name
-  location            = azurerm_resource_group.helmchart.location
-  enabled_for_disk_encryption = true
-  tenant_id           = var.tenant_id
-  sku_name            = "standard"
-
-  access_policy {
-    tenant_id = var.tenant_id
-    object_id = var.object_id
-
-    key_permissions = [
-      "get",
-      "list",
-    ]
-
-    secret_permissions = [
-      "get",
-      "list",
-    ]
-  }
-}
-
 
 resource "azurerm_storage_account" "helmchart" {
   name                     = "helmstorage${random_string.resource_code.result}"
