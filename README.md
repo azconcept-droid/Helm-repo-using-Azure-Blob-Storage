@@ -4,15 +4,16 @@ Create a Helm repository using Azure Blob Storage (search on the internet for in
 
 Once the bucket is ready, push some example charts into the repository You will find on the internet Helm s3 plugins that help interact with s3 as a Helm repository.
 
-## Documentation
+## Prerequisites
+- Install azure cloud cli [here](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli)
+- Install terraform [here](https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli)
+- Create an azure cloud account [here](https://www.googleadservices.com/pagead/aclk?sa=L&ai=DChcSEwjSrZb2rNOEAxVlk1AGHWdxCckYABACGgJkZw&gclid=CjwKCAiAloavBhBOEiwAbtAJO8LtpuZjfweWojd-eHtBPMrAdbjM3K-y2hY9t8k6WXgvgfcC1cChixoCzpsQAvD_BwE&ohost=www.google.com&cid=CAESVuD2J0kdkfnkQONvPZrxuVWrYEmSU2S76tW2UCFncdl7Una0SJosngkz9dNbmkU1CkhyyXGiz6dYm7F2EOfZG-eRRLvS-TeEj73Rq-Nmlho9rnlyV9es&sig=AOD64_32oTyoiSZDTMT-5vs4UxNMexuILA&q&adurl&ved=2ahUKEwjagZH2rNOEAxUfQEEAHXytAf4Q0Qx6BAgLEAE)
 
-### Install the Azure CLI tool
-You will use the Azure CLI tool to authenticate with Azure.
-#### For windows
+## Usage
+### Fork or Clone this repo
 ```
-Invoke-WebRequest -Uri https://aka.ms/installazurecliwindows -OutFile .\AzureCLI.msi; Start-Process msiexec.exe -Wait -ArgumentList '/I AzureCLI.msi /quiet'; rm .\AzureCLI.msi
+git clone https://github.com/azconcept-droid/Helm-repo-using-Azure-Blob-Storage.git
 ```
-
 ### Authenticate using the Azure CLI
 Terraform must authenticate to Azure to create infrastructure.
 
@@ -54,7 +55,6 @@ Next, create a Service Principal. A Service Principal is an application within A
 ```
 az ad sp create-for-rbac --role="Contributor" --scopes="/subscriptions/<SUBSCRIPTION_ID>"
 ```
-
 ### Set your environment variables
 HashiCorp recommends setting these values as environment variables rather than saving them in your Terraform configuration as best practice ✔.
 
@@ -70,49 +70,15 @@ HashiCorp recommends setting these values as environment variables rather than s
 > export ARM_SUBSCRIPTION_ID="<SUBSCRIPTION_ID>"  
 > export ARM_TENANT_ID="<TENANT_VALUE>"  
 
-### Install Terraform
-To install Terraform, find the [appropriate package](https://developer.hashicorp.com/terraform/install) for your system and download it as a zip archive.
-
-After downloading Terraform, unzip the package. Terraform runs as a single binary named terraform. Any other files in the package can be safely removed and Terraform will still function.
-
-Finally, make sure that the terraform binary is available on your PATH. This process will differ depending on your operating system.
-
-[This Stack Overflow article](https://stackoverflow.com/questions/1618280/where-can-i-set-path-to-make-exe-on-windows) contains instructions for setting the PATH on Windows through the user interface
-
-### Verify the installation
-Verify that the installation worked by opening a new terminal session and listing Terraform's available subcommands.
-```
-terraform -help
-```
-
-### Initialize your Terraform configuration
-Initialize your directory in your terminal. The terraform commands will work with any operating system. 
+2. Initialize terraform
 ```
 terraform init
 ```
-
-### Format and validate the configuration
-We recommend using consistent formatting in all of your configuration files. The terraform fmt command automatically updates configurations in the current directory for readability and consistency.
-
-Format your configuration. Terraform will print out the names of the files it modified, if any. In this case, your configuration file was already formatted correctly, so Terraform won't return any file names.
+3. Plan the terraform deployment
 ```
-terraform fmt
+terraform plan
 ```
-You can also make sure your configuration is syntactically valid and internally consistent by using the terraform validate command.
-```
-terraform validate
-```
-
-### Apply your Terraform Configuration
-Run the terraform apply command to apply your configuration.
-
-This output shows the execution plan and will prompt you for approval before proceeding. If anything in the plan seems incorrect or dangerous, it is safe to abort here with no changes made to your infrastructure. Type yes at the confirmation prompt to proceed.
+4. Apply the terraform plan
 ```
 terraform apply
-```
-
-### Inspect your state
-When you apply your configuration, Terraform writes data into a file called terraform.tfstate. This file contains the IDs and properties of the resources Terraform created so that it can manage or destroy those resources going forward. Your state file contains all of the data in your configuration and could also contain sensitive values in plaintext, so do not share it or check it in to source control.
-```
-terraform show
 ```
