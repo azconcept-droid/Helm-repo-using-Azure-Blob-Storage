@@ -70,15 +70,44 @@ HashiCorp recommends setting these values as environment variables rather than s
 > export ARM_SUBSCRIPTION_ID="<SUBSCRIPTION_ID>"  
 > export ARM_TENANT_ID="<TENANT_VALUE>"  
 
-2. Initialize terraform
+### Initialize terraform
 ```
 terraform init
 ```
-3. Plan the terraform deployment
+### Plan the terraform infrastructure deployment
 ```
 terraform plan
 ```
-4. Apply the terraform plan
+### Apply the terraform plan
 ```
 terraform apply
+```
+### See the infrastructure that has been deployed
+```
+terraform show
+```
+### Get the terraform outputs to interact with the storage account
+```
+Terraform output 
+```
+## Helm chart
+### Create an helm chart
+```
+helm create <helm-chart-name>
+```
+### Package your helm chart
+```
+helm package <path-to-your-chart>
+```
+### Install the helm chart plugin to push the chart to azure blob storage
+```
+helm plugin install https://github.com/chartmuseum/helm-push
+```
+### Generate the Helm index file for your charts. This file is used by Helm clients to discover and install charts.
+```
+helm repo index --url https://<your-storage-account-name>.blob.core.windows.net/<your-container-name>/ --merge index.yaml .
+```
+### Upload Helm Index File to Azure Blob Storage
+```
+az storage blob upload --account-name <your-storage-account-name> --account-key <your-storage-account-key> --container-name <your-container-name> --type block --name index.yaml
 ```
