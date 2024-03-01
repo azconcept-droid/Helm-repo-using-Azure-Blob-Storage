@@ -5,6 +5,10 @@
 *.tfstate
 *.tfstate.*
 
+# Helm chart
+helm-*
+
+index*
 # Crash log files
 crash.log
 

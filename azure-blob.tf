@@ -12,7 +12,7 @@ resource "azurerm_resource_group" "helmchart" {
 }
 
 resource "azurerm_storage_account" "helmchartgroup" {
-  name                     = "helmstorage${random_string.resource_code.result}"
+  name = "helmstorage${random_string.resource_code.result}"
   # name                     = "helmstoragepdiol"
   resource_group_name      = azurerm_resource_group.helmchart.name
   location                 = azurerm_resource_group.helmchart.location
@@ -21,7 +21,7 @@ resource "azurerm_storage_account" "helmchartgroup" {
   account_replication_type = "GRS"
 
   tags = {
-	environment = "production"
+    environment = "production"
   }
 }
 
